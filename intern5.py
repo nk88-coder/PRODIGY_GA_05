@@ -3,7 +3,6 @@
 
 
 
-
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -118,15 +117,26 @@ def get_image_paths():
     try:
         # Try Colab file upload
         from google.colab import files
-        print("📤 Please upload Content and Style images (in order)...")
-        uploaded = files.upload()
 
-        file_names = list(uploaded.keys())
-        if len(file_names) < 2:
-            raise Exception("Please upload **two images**: one for content, one for style.")
+# Upload content image
+        print("📤 Upload the **Content** image...")
+        uploaded_content = files.upload()
 
-        content_path = file_names[0]
-        style_path = file_names[1]
+# Store the content image path
+        if len(uploaded_content) != 1:
+           raise Exception("Upload only one content image!")
+        content_path = list(uploaded_content.keys())[0]
+
+# Upload style image
+        print("🎨 Upload the **Style** image...")
+        uploaded_style = files.upload()
+
+# Store the style image path
+        if len(uploaded_style) != 1:
+          raise Exception("Upload only one style image!")
+        style_path = list(uploaded_style.keys())[0]
+
+
 
     except Exception:
         print("⚠️ Not in Colab or upload failed. Switching to manual path input.")
